@@ -6,6 +6,7 @@ import rb
 pub struct Arguments {
 pub mut:
 	is_server bool
+	add_db string
 }
 
 pub fn get_arguments() Arguments {
@@ -21,6 +22,10 @@ pub fn get_arguments() Arguments {
 	'\n\nOptions:')
 	option_parser.on("server", "", "Starts the web server\n", fn [mut ref_args] (_ string) {
 		ref_args.is_server = true
+	})
+	option_parser.on("-adb NAME", "--add-db NAME",
+			"Adds another database to the\nconfiguration file.", fn [mut ref_args] (name string) {
+		ref_args.add_db = name
 	})
 	option_parser.on("-h", "--help", "Show help", fn [mut ref_op] (_ string) {
 		print(ref_op.help_str())

@@ -16,28 +16,26 @@ pub struct Server {
 pub mut:
 	db sqlite.DB
 mut:
-	arguments cli.Arguments [vweb_global]
+	config cli.Configuration [vweb_global]
 }
 
-pub fn new(arguments cli.Arguments) {
+pub fn new(config cli.Configuration) {
 	
-	vweb.run_at(new_server(arguments), vweb.RunParams{
+	vweb.run_at(new_server(config), vweb.RunParams{
         port: port
     }) or { panic(err) }
 }
 
-fn new_server(arguments cli.Arguments) &Server {
+fn new_server(config cli.Configuration) &Server {
 	
 	mut server := &Server{
-		arguments: cli.Arguments{
-			true
-		}
 		db: sqlite.connect('cv.sqlite') or { panic(err) }
+		config: config
 	}
 	server.handle_static(static_dir, true)
 	return server
 }
 
 pub fn (mut s Server) before_request() {
-	// println(s.arguments)
+	// println(s.config.json_parser.get())
 }

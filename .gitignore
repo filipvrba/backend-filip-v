@@ -9,6 +9,7 @@ backend-filip-v
 
 # Ignore binary output folders
 bin/
+shared/
 
 # Ignore common editor/system specific metadata
 .DS_Store
