@@ -14,9 +14,9 @@ const (
 pub struct Server {
 	vweb.Context
 pub mut:
-	db sqlite.DB
-mut:
-	config cli.Configuration [vweb_global]
+	database map[string]Database [vweb_global]
+// mut:
+	// config cli.Configuration [vweb_global]
 }
 
 pub fn new(config cli.Configuration) {
@@ -29,13 +29,9 @@ pub fn new(config cli.Configuration) {
 fn new_server(config cli.Configuration) &Server {
 	
 	mut server := &Server{
-		db: sqlite.connect('cv.sqlite') or { panic(err) }
-		config: config
+		database: get_database(config)
+		// config: config
 	}
 	server.handle_static(static_dir, true)
 	return server
-}
-
-pub fn (mut s Server) before_request() {
-	// println(s.config.json_parser.get())
 }

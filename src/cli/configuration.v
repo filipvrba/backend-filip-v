@@ -9,7 +9,7 @@ pub mut:
 	json_parser jp.JsonParser
 }
 
-const(
+pub const(
 	key_db = "database"
 )
 
