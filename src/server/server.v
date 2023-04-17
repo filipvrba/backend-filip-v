@@ -1,7 +1,6 @@
 module server
 
 import vweb
-import db.sqlite
 import os
 import src.cli
 
@@ -15,8 +14,6 @@ pub struct Server {
 	vweb.Context
 pub mut:
 	database map[string]Database [vweb_global]
-// mut:
-	// config cli.Configuration [vweb_global]
 }
 
 pub fn new(config cli.Configuration) {
@@ -30,7 +27,6 @@ fn new_server(config cli.Configuration) &Server {
 	
 	mut server := &Server{
 		database: get_database(config)
-		// config: config
 	}
 	server.handle_static(static_dir, true)
 	return server

@@ -1,8 +1,6 @@
 module server
 
 import vweb
-import x.json2
-import json
 
 pub fn (mut s Server) health() vweb.Result {
 	context := Health{ 200, "ok" }
