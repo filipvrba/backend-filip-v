@@ -2,6 +2,7 @@ module main
 
 import src.cli
 import src.server
+import rb
 
 struct BackendFilip {
 mut:
@@ -13,6 +14,10 @@ fn main() {
 
 	if bef.cli.arguments.add_db != "" {
 		bef.cli.config.add_database(bef.cli.arguments.add_db)
+		exit(0)
+	}
+	else if bef.cli.arguments.is_token {
+		rb.Event{name: "token"}.println(cli.get_token().self)
 		exit(0)
 	}
 	else if bef.cli.arguments.is_server {

@@ -6,6 +6,7 @@ import rb
 pub struct Arguments {
 pub mut:
 	is_server bool
+	is_token bool
 	add_db string
 }
 
@@ -26,6 +27,14 @@ pub fn get_arguments() Arguments {
 	option_parser.on("-adb NAME", "--add-db NAME",
 			"Adds another database to the\nconfiguration file.", fn [mut ref_args] (name string) {
 		ref_args.add_db = name
+	})
+	option_parser.on("-gt", "--get-token",
+			"To secure API server access, this function\n" +
+                                   "generates a token with a specified length\n" +
+                                   "(manual entry of the token into the ENV\n" +
+                                   "is required).\n" +
+                                   "The default: $token_length length.", fn [mut ref_args] (_ string) {
+		ref_args.is_token = true
 	})
 	option_parser.on("-h", "--help", "Show help", fn [mut ref_op] (_ string) {
 		print(ref_op.help_str())
