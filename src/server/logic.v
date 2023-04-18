@@ -8,3 +8,7 @@ pub fn is_query_valid(query string, keywords []string) bool {
 	}
 	return true
 }
+
+pub fn get_err_health(status_code string) Health {
+	return Health{status_code.int(), "SQL Error"}
+}

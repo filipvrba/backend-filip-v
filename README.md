@@ -18,7 +18,7 @@ http -> /api/v1/database
 === method ===
 [x] fn get_api_database
 [x] fn post_api_database
-[] fn delete_api_database
+[x] fn delete_api_database
 [] fn patch_api_database
 ```
 

@@ -20,8 +20,12 @@ fn get_database(config cli.Configuration) map[string]Database {
 	return database
 }
 
-fn (d Database) exec(query string) []map[string]string {
-	rows, _ := d.sqlite.exec("$query;")
+fn (d Database) exec(query string) ![]map[string]string {
+	rows, status_code := d.sqlite.exec("$query;")
+	if status_code != 101 {
+		return error(status_code.str())
+	}
+
 	mut rows_arr := []map[string]string{}
 
 	for row in rows {
