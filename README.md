@@ -26,6 +26,8 @@ http -> /api/v1/database
 ```sql
 CREATE TABLE profiles (name TEXT, year INTEGER);
 INSERT INTO profiles (name, year) VALUES ("filip", 27);
+DELETE FROM profiles WHERE name='lada';
+UPDATE profiles SET name="lada" WHERE name="lukas";
 ```
 
 *Logic for getting the column name into **exec(...)** function was added to db.sqlite module:*
