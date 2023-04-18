@@ -19,7 +19,7 @@ http -> /api/v1/database
 [x] fn get_api_database
 [x] fn post_api_database
 [x] fn delete_api_database
-[] fn patch_api_database
+[x] fn patch_api_database
 ```
 
 *SQL examples:*

@@ -80,3 +80,27 @@ pub fn (mut s Server) delete_api_database() vweb.Result {
 	}
 	return s.json(healts[200])
 }
+
+[patch; "/api/v1"]
+pub fn (mut s Server) patch_api_database() vweb.Result {
+header := s.Context.req.header
+	token := header.get_custom("Token") or {""}
+	database := header.get_custom("Database") or {""}
+	query := header.get_custom("Query") or {""}
+
+	if token != host_server {
+		return s.json(healts[403])
+	}
+
+	keywords := [
+		"update",
+	]
+	if is_query_valid(query, keywords) {
+		return s.json(healts[405])
+	}
+
+	s.database[database].exec(query) or {
+		return s.json(get_err_health(err.str()))
+	}
+	return s.json(healts[200])
+}
