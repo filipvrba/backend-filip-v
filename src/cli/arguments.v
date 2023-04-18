@@ -7,6 +7,7 @@ pub struct Arguments {
 pub mut:
 	is_server bool
 	is_token bool
+	is_get_db bool
 	add_db string
 }
 
@@ -21,12 +22,16 @@ pub fn get_arguments() Arguments {
 	'a backend in the form of a REST API.\n\n' +
 	'Usage: $app_name [oprions]' +
 	'\n\nOptions:')
-	option_parser.on("server", "", "Starts the web server\n", fn [mut ref_args] (_ string) {
+	option_parser.on("server", "", "Starts the web server.\n", fn [mut ref_args] (_ string) {
 		ref_args.is_server = true
 	})
 	option_parser.on("-adb NAME", "--add-db NAME",
 			"Adds another database to the\nconfiguration file.", fn [mut ref_args] (name string) {
 		ref_args.add_db = name
+	})
+	option_parser.on("-gdb", "--get-db",
+			"Prints a list of added databases.", fn [mut ref_args] (_ string) {
+		ref_args.is_get_db = true
 	})
 	option_parser.on("-gt", "--get-token",
 			"Generates tokens for client and server\n" +

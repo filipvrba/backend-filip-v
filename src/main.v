@@ -16,6 +16,10 @@ fn main() {
 		bef.cli.config.add_database(bef.cli.arguments.add_db)
 		exit(0)
 	}
+	else if bef.cli.arguments.is_get_db {
+		rb.Event{name: "database"}.println(bef.cli.config.get_database_str())
+		exit(0)
+	}
 	else if bef.cli.arguments.is_token {
 		rb.Event{name: "token"}.println("BEF_CLIENT: ${cli.get_token(32).self}")
 		rb.Event{name: "token"}.println("BEF_SERVER: ${cli.get_token(64).self}")

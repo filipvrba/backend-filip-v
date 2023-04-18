@@ -31,3 +31,8 @@ pub fn (mut c Configuration) add_database(name string) {
 		rb.Event{name: "warning"}.println("The '$name' database has already been entered.")
 	}
 }
+
+pub fn (mut c Configuration) get_database_str() string {
+	database := c.json_parser.get_data()
+	return database[key_db] or {""}.prettify_json_str()
+}
