@@ -16,6 +16,10 @@ fn main() {
 		bef.cli.config.add_database(bef.cli.arguments.add_db)
 		exit(0)
 	}
+	else if bef.cli.arguments.remove_db != "" {
+		bef.cli.config.remove_database(bef.cli.arguments.remove_db)
+		exit(0)
+	}
 	else if bef.cli.arguments.is_get_db {
 		rb.Event{name: "database"}.println(bef.cli.config.get_database_str())
 		exit(0)

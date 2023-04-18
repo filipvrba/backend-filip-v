@@ -9,6 +9,7 @@ pub mut:
 	is_token bool
 	is_get_db bool
 	add_db string
+	remove_db string
 }
 
 pub fn get_arguments() Arguments {
@@ -29,6 +30,10 @@ pub fn get_arguments() Arguments {
 			"Adds another database to the\nconfiguration file.", fn [mut ref_args] (name string) {
 		ref_args.add_db = name
 	})
+	option_parser.on("-rdb NAME", "--remove-db NAME",
+			"Removes the database name from\nthe configuration file.", fn [mut ref_args] (name string) {
+		ref_args.remove_db = name
+	})
 	option_parser.on("-gdb", "--get-db",
 			"Prints a list of added databases.", fn [mut ref_args] (_ string) {
 		ref_args.is_get_db = true
@@ -38,15 +43,20 @@ pub fn get_arguments() Arguments {
 			"(Client is for GET and\nServer is for DB change).", fn [mut ref_args] (_ string) {
 		ref_args.is_token = true
 	})
-	option_parser.on("-h", "--help", "Show help", fn [mut ref_op] (_ string) {
+	l_helper := fn [mut ref_op] (_ string) {
 		print(ref_op.help_str())
 		exit(0)
-	})
+	}
+	option_parser.on("-h", "--help", "Show help", l_helper)
 	option_parser.on("-v", "--version", "Show version", fn (_ string) {
 		rb.Event{name: 'version'}.println(version)
 		exit(0)
 	})
 	option_parser.init()
+
+	if !option_parser.have_arguments() {
+		l_helper("")
+	}
 
 	return arguments
 }

@@ -32,6 +32,27 @@ pub fn (mut c Configuration) add_database(name string) {
 	}
 }
 
+pub fn (mut c Configuration) remove_database(name string) {
+	mut database := c.json_parser.get(key_db).arr()
+	if database.any(it.str() == name) {
+		mut index := -1
+		for i in 0 .. database.len {
+			if database[i].str() == name {
+				index = i
+			}
+		}
+
+		database.delete(index)
+		c.json_parser.set(key_db, database)
+		rb.Event{name: "remove"}.println("$key_db: $name")
+	}
+	else {
+		rb.Event{name: "warning"}.println(
+			"The '$name' database does not exist and therefore will not be removed."
+		)
+	}
+}
+
 pub fn (mut c Configuration) get_database_str() string {
 	database := c.json_parser.get_data()
 	return database[key_db] or {""}.prettify_json_str()
