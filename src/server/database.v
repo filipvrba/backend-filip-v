@@ -20,13 +20,16 @@ fn get_database(config cli.Configuration) map[string]Database {
 	return database
 }
 
-fn (d Database) exec(query string) map[string]string {
+fn (d Database) exec(query string) []map[string]string {
 	rows, _ := d.sqlite.exec("$query;")
-	mut rows_map := map[string]string
+	mut rows_arr := []map[string]string{}
+
 	for row in rows {
+		mut rows_map := map[string]string
 		for ci in 0 .. row.cols.len {
 			rows_map[row.cols[ci]] = row.vals[ci]
 		}
+		rows_arr << rows_map
 	}
-	return rows_map
+	return rows_arr
 }

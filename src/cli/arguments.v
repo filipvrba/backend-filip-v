@@ -29,11 +29,8 @@ pub fn get_arguments() Arguments {
 		ref_args.add_db = name
 	})
 	option_parser.on("-gt", "--get-token",
-			"To secure API server access, this function\n" +
-                                   "generates a token with a specified length\n" +
-                                   "(manual entry of the token into the ENV\n" +
-                                   "is required).\n" +
-                                   "The default: $token_length length.", fn [mut ref_args] (_ string) {
+			"Generates tokens for client and server\n" +
+			"(Client is for GET and\nServer is for DB change).", fn [mut ref_args] (_ string) {
 		ref_args.is_token = true
 	})
 	option_parser.on("-h", "--help", "Show help", fn [mut ref_op] (_ string) {

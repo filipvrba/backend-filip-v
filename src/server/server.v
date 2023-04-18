@@ -7,7 +7,8 @@ import src.cli
 const (
 	port = 8080
 	static_dir = 'src/public'
-    token = os.environ()["BEF_TOKEN"]
+	host_client = os.environ()["BEF_CLIENT"]
+	host_server = os.environ()["BEF_SERVER"]
 )
 
 pub struct Server {

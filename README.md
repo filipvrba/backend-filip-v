@@ -9,16 +9,17 @@ http -> /api/v1/database
 
 	get -> token/database/query
 		= result values from db
-	post | delete ->
+	post | delete | patch ->
 		body
 			- token
 			- database
 			- query
 		= result mesage
 === method ===
-fn get_api_database
-fn post_api_database
-fn delete_api_database
+[x] fn get_api_database
+[x] fn post_api_database
+[] fn delete_api_database
+[] fn patch_api_database
 ```
 
 *SQL examples:*
