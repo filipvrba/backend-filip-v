@@ -1,0 +1,4 @@
+#!/bin/bash
+
+clear
+v watch -o build/bef run . $@

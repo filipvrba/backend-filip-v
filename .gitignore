@@ -8,9 +8,9 @@ backend-filip-v
 *.dll
 
 # Ignore binary output folders
-bin/
 shared/
 build/
+dist/
 
 # Ignore common editor/system specific metadata
 .DS_Store
