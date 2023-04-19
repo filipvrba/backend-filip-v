@@ -1,23 +1,35 @@
 module server
 
 import db.sqlite
-import src.cli
+import os
 
 pub struct Database {
 pub:
 	sqlite sqlite.DB
 }
 
-fn get_database(config cli.Configuration) map[string]Database {
+fn get_database(length u8) map[string]Database {
 	mut database := map[string]Database
-	mut json_parser := config.json_parser
-	mut db_names := json_parser.get(cli.key_db)
-	for name in db_names.arr() {
-		database[name.str()] = Database{
+	mut db_names := get_db_names(length)
+
+	if !os.exists(static_dir) {
+		os.mkdir_all(static_dir) or {panic(err)}
+	}
+
+	for name in db_names {
+		database[name] = Database{
 			sqlite.connect('$static_dir/${name}.db') or { panic(err) }
 		}
 	}
 	return database
+}
+
+fn get_db_names(length u8) []string {
+	mut result := []string{}
+	for i in 1 .. (length + 1) {
+		result << i.str()
+	}
+	return result
 }
 
 fn (d Database) exec(query string) ![]map[string]string {

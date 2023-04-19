@@ -1,7 +1,6 @@
 module server
 
 import vweb
-import src.cli
 
 pub struct Server {
 	vweb.Context
@@ -9,18 +8,20 @@ pub mut:
 	database map[string]Database [vweb_global]
 }
 
-pub fn new(config cli.Configuration) {
+pub fn new(length u8) {
 	
-	vweb.run_at(new_server(config), vweb.RunParams{
+	vweb.run_at(new_server(length), vweb.RunParams{
         port: port
     }) or { panic(err) }
 }
 
-fn new_server(config cli.Configuration) &Server {
-	
+fn new_server(length u8) &Server {
 	mut server := &Server{
-		database: get_database(config)
+		database: get_database(length)
 	}
-	server.handle_static(static_dir, true)
 	return server
+}
+
+pub fn (mut a Server) before_request() {
+    a.add_header("Access-Control-Allow-Origin", "*")  
 }

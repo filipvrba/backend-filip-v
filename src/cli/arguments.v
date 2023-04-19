@@ -5,9 +5,9 @@ import rb
 
 pub struct Arguments {
 pub mut:
-	is_server bool
 	is_token bool
 	is_get_db bool
+	server u8
 	add_db string
 	remove_db string
 }
@@ -23,20 +23,10 @@ pub fn get_arguments() Arguments {
 	'a backend in the form of a REST API.\n\n' +
 	'Usage: $app_name [oprions]' +
 	'\n\nOptions:')
-	option_parser.on("server", "", "Starts the web server.\n", fn [mut ref_args] (_ string) {
-		ref_args.is_server = true
-	})
-	option_parser.on("-adb NAME", "--add-db NAME",
-			"Adds another database to the\nconfiguration file.", fn [mut ref_args] (name string) {
-		ref_args.add_db = name
-	})
-	option_parser.on("-rdb NAME", "--remove-db NAME",
-			"Removes the database name from\nthe configuration file.", fn [mut ref_args] (name string) {
-		ref_args.remove_db = name
-	})
-	option_parser.on("-gdb", "--get-db",
-			"Prints a list of added databases.", fn [mut ref_args] (_ string) {
-		ref_args.is_get_db = true
+	option_parser.on("server LENGTH", "", "Starts a web server with a defined\n" +
+					 "value to create many databases\n" +
+					 "(The LENGTH value has a range from 1 to 255).\n", fn [mut ref_args] (length string) {
+		ref_args.server = length.u8()
 	})
 	option_parser.on("-gt", "--get-token",
 			"Generates tokens for client and server\n" +
