@@ -27,4 +27,4 @@ WORKDIR /app
 COPY --from=builder /app/dist/ .
 
 EXPOSE 8080
-CMD [ "./bef", "server" ]
+CMD ["./bef", "server", "64"]
