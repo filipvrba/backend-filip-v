@@ -21,7 +21,8 @@ RUN /opt/v/v -prod -o dist/bef .
 FROM alpine AS runtime
 
 RUN apk update && apk upgrade \
-    && apk add --no-cache openssl sqlite-dev vim
+    && apk add --no-cache openssl sqlite-dev vim \
+    sqlite
 
 WORKDIR /app
 COPY --from=builder /app/dist/ .
