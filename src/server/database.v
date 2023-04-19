@@ -14,7 +14,7 @@ fn get_database(config cli.Configuration) map[string]Database {
 	mut db_names := json_parser.get(cli.key_db)
 	for name in db_names.arr() {
 		database[name.str()] = Database{
-			sqlite.connect('shared/${name}.db') or { panic(err) }
+			sqlite.connect('$static_dir/${name}.db') or { panic(err) }
 		}
 	}
 	return database

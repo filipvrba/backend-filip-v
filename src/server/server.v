@@ -1,15 +1,7 @@
 module server
 
 import vweb
-import os
 import src.cli
-
-const (
-	port = 8080
-	static_dir = 'src/public'
-	host_client = os.environ()["BEF_CLIENT"]
-	host_server = os.environ()["BEF_SERVER"]
-)
 
 pub struct Server {
 	vweb.Context
