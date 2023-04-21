@@ -22,6 +22,6 @@ fn new_server(length u8) &Server {
 	return server
 }
 
-pub fn (mut a Server) before_request() {
-    a.add_header("Access-Control-Allow-Origin", "*")  
+pub fn (mut s Server) before_request() {
+    s.add_header("Access-Control-Allow-Origin", "*")
 }
