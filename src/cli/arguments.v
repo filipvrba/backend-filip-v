@@ -5,7 +5,7 @@ import rb
 
 pub struct Arguments {
 pub mut:
-	is_token bool
+	token_length u8
 	is_get_db bool
 	server u8
 	add_db string
@@ -28,10 +28,9 @@ pub fn get_arguments() Arguments {
 					 "(The LENGTH value has a range from 1 to 255).\n", fn [mut ref_args] (length string) {
 		ref_args.server = length.u8()
 	})
-	option_parser.on("-gt", "--get-token",
-			"Generates tokens for client and server\n" +
-			"(Client is for GET and\nServer is for DB change).", fn [mut ref_args] (_ string) {
-		ref_args.is_token = true
+	option_parser.on("-gt LENGTH", "--get-token LENGTH",
+			"Generates a token with a defined length.", fn [mut ref_args] (length string) {
+		ref_args.token_length = length.u8()
 	})
 	l_helper := fn [mut ref_op] (_ string) {
 		print(ref_op.help_str())

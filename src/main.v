@@ -12,9 +12,8 @@ mut:
 fn main() {
 	mut bef := BackendFilip{}
 
-	if bef.cli.arguments.is_token {
-		rb.Event{name: "token"}.println("BEF_CLIENT: ${cli.get_token(32).self}")
-		rb.Event{name: "token"}.println("BEF_SERVER: ${cli.get_token(64).self}")
+	if bef.cli.arguments.token_length > 0 {
+		rb.Event{name: "token"}.println("${cli.get_token(bef.cli.arguments.token_length).self}")
 		exit(0)
 	}
 	else if bef.cli.arguments.server > 0 {

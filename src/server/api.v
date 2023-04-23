@@ -30,7 +30,7 @@ pub fn (mut s Server) get_api_database() vweb.Result {
 		"delete",
 		"update"
 	]
-	if token != host_client {
+	if token != s.client_token(database) {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -55,7 +55,7 @@ pub fn (mut s Server) post_api_database() vweb.Result {
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'post'}
 
-	if token != host_server {
+	if token != s.server_token(database) {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -85,7 +85,7 @@ pub fn (mut s Server) delete_api_database() vweb.Result {
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'delete'}
 
-	if token != host_server {
+	if token != s.server_token(database) {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -114,7 +114,7 @@ header := s.Context.req.header
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'patch'}
 
-	if token != host_server {
+	if token != s.server_token(database) {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}

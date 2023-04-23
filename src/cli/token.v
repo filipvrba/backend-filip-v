@@ -7,7 +7,7 @@ pub:
 	self string
 }
 
-pub fn get_token(length i8) Token {
+pub fn get_token(length u8) Token {
 	mut token := []u8{}
     for _ in 0 .. length {
         token << gen_letter_or_digit()

@@ -2,6 +2,7 @@ module server
 
 import db.sqlite
 import os
+import src.cli
 
 pub struct Database {
 pub:
@@ -20,6 +21,8 @@ fn get_database(length u8) map[string]Database {
 		database[name] = Database{
 			sqlite.connect('$static_dir/${name}.db') or { panic(err) }
 		}
+		database[name].create_tables() or { panic(err) }
+		database[name].create_rows() or { panic(err) }
 	}
 	return database
 }
@@ -48,4 +51,33 @@ fn (d Database) exec(query string) ![]map[string]string {
 		rows_arr << rows_map
 	}
 	return rows_arr
+}
+
+fn (d Database) create_tables() ! {
+	sql d.sqlite {
+		create table Authorization
+	}!
+	sql d.sqlite {
+		create table Guard
+	}!
+}
+
+fn (d Database) create_rows() ! {
+	d.create_row_authorization()!
+}
+
+fn (d Database) create_row_authorization() ! {
+	select_auth := sql d.sqlite {
+		select from Authorization
+	} or { []Authorization{} }
+
+	if select_auth.len == 0 {
+		auth := Authorization{
+			client_token: cli.get_token(32).self
+			server_token: cli.get_token(64).self
+		}
+		sql d.sqlite {
+			include auth into Authorization
+		}!
+	}
 }
