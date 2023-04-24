@@ -28,3 +28,11 @@ pub fn (mut s Server) get_query_from_token(db_name string, token string) !string
 		return error("No guard was found.")
 	}
 }
+
+pub fn (mut s Server) client_secret(db_name string) string {
+	select_auth := sql s.database[db_name].sqlite {
+		select from Authorization
+	} or { panic(err) }[0]
+
+	return select_auth.client_secret
+}

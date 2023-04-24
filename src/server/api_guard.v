@@ -2,7 +2,6 @@ module server
 
 import vweb
 import rb
-import json
 
 [get; "/api/v1/guard"]
 pub fn (mut s Server) get_api_database_guard() vweb.Result {
@@ -30,6 +29,7 @@ pub fn (mut s Server) get_api_database_guard() vweb.Result {
 		event.println(get_err_health(err.str()).str())
 		return s.json(get_err_health(err.str()))
 	}
-	event.println(json.encode_pretty(context))
+
+	event.println(healts[200].str())
 	return s.json(context)
 }

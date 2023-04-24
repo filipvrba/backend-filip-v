@@ -17,3 +17,9 @@ pub struct Guard {
 	query string
 	token string
 }
+
+pub struct AccessToken {
+	access_token string
+	scope 		 string
+	token_type 	 string
+}

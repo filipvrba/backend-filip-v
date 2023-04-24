@@ -2,7 +2,6 @@ module server
 
 import vweb
 import rb
-import json
 
 pub fn (mut s Server) health() vweb.Result {
 	rb.Event{name: 'health'}.println(healts[200].str())
@@ -13,7 +12,7 @@ pub fn (mut s Server) health() vweb.Result {
 pub fn (mut s Server) options_api_database() vweb.Result {
 	s.add_header("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH")
 	s.add_header("Access-Control-Allow-Headers", "Token, Database, Query")
-	rb.Event{name: 'options'}.println(healts[200].str())
+	rb.Event{name: 'options /api/v1'}.println(healts[200].str())
 	return s.json(healts[200])
 }
 
@@ -22,7 +21,7 @@ pub fn (mut s Server) get_api_database() vweb.Result {
 	token := s.query['token']
 	database := s.query['database']
 	query := s.query['query']
-	event := rb.Event{name: 'get'}
+	event := rb.Event{name: 'get /api/v1'}
 
 	keywords := [
 		"insert into",
@@ -43,7 +42,8 @@ pub fn (mut s Server) get_api_database() vweb.Result {
 		event.println(get_err_health(err.str()).str())
 		return s.json(get_err_health(err.str()))
 	}
-	event.println(json.encode_pretty(context))
+	
+	event.println(healts[200].str())
 	return s.json(context)
 }
 
@@ -53,7 +53,7 @@ pub fn (mut s Server) post_api_database() vweb.Result {
 	token := header.get_custom("Token") or {""}
 	database := header.get_custom("Database") or {""}
 	query := header.get_custom("Query") or {""}
-	event := rb.Event{name: 'post'}
+	event := rb.Event{name: 'post /api/v1'}
 
 	if token != s.server_token(database) {
 		event.println(healts[403].str())
@@ -83,7 +83,7 @@ pub fn (mut s Server) delete_api_database() vweb.Result {
 	token := header.get_custom("Token") or {""}
 	database := header.get_custom("Database") or {""}
 	query := header.get_custom("Query") or {""}
-	event := rb.Event{name: 'delete'}
+	event := rb.Event{name: 'delete /api/v1'}
 
 	if token != s.server_token(database) {
 		event.println(healts[403].str())
@@ -112,7 +112,7 @@ header := s.Context.req.header
 	token := header.get_custom("Token") or {""}
 	database := header.get_custom("Database") or {""}
 	query := header.get_custom("Query") or {""}
-	event := rb.Event{name: 'patch'}
+	event := rb.Event{name: 'patch /api/v1'}
 
 	if token != s.server_token(database) {
 		event.println(healts[403].str())
