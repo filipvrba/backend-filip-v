@@ -19,7 +19,7 @@ pub fn (mut s Server) server_token(db_name string) string {
 pub fn (mut s Server) get_query_from_token(db_name string, token string) !string {
 	select_guard := sql s.database[db_name].sqlite {
 		select from Guard where token == token
-	} or { panic(err) }
+	} or { error(err) }
 
 	if select_guard.len > 0 {
 		return select_guard[0].query
