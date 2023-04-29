@@ -14,7 +14,12 @@ pub fn (mut s Server) get_api_github_access_token() vweb.Result {
 
 	data := {
 		'client_id': client_id,
-		'client_secret': s.client_secret(database),
+		'client_secret': s.client_secret(database) or {
+			str_err_code := rb.String{err.str()}.sub('^.*code: ', '').to_v()
+			err_health := get_err_health(str_err_code)
+			event.println(err_health.str())
+			return s.json(err_health)
+		},
 		'code': code,
 		'accept': 'json'
 	}

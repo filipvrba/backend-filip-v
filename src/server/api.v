@@ -29,7 +29,13 @@ pub fn (mut s Server) get_api_database() vweb.Result {
 		"delete",
 		"update"
 	]
-	if token != s.client_token(database) {
+	if token != s.client_token(database)
+	or {
+		str_err_code := rb.String{err.str()}.sub('^.*code: ', '').to_v()
+		err_health := get_err_health(str_err_code)
+		event.println(err_health.str())
+		return s.json(err_health)
+	} {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -55,7 +61,12 @@ pub fn (mut s Server) post_api_database() vweb.Result {
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'post /api/v1'}
 
-	if token != s.server_token(database) {
+	if token != s.server_token(database) or {
+		str_err_code := rb.String{err.str()}.sub('^.*code: ', '').to_v()
+		err_health := get_err_health(str_err_code)
+		event.println(err_health.str())
+		return s.json(err_health)
+	} {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -85,7 +96,12 @@ pub fn (mut s Server) delete_api_database() vweb.Result {
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'delete /api/v1'}
 
-	if token != s.server_token(database) {
+	if token != s.server_token(database) or {
+		str_err_code := rb.String{err.str()}.sub('^.*code: ', '').to_v()
+		err_health := get_err_health(str_err_code)
+		event.println(err_health.str())
+		return s.json(err_health)
+	} {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
@@ -114,7 +130,12 @@ header := s.Context.req.header
 	query := header.get_custom("Query") or {""}
 	event := rb.Event{name: 'patch /api/v1'}
 
-	if token != s.server_token(database) {
+	if token != s.server_token(database) or {
+		str_err_code := rb.String{err.str()}.sub('^.*code: ', '').to_v()
+		err_health := get_err_health(str_err_code)
+		event.println(err_health.str())
+		return s.json(err_health)
+	} {
 		event.println(healts[403].str())
 		return s.json(healts[403])
 	}
