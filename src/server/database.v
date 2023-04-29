@@ -12,14 +12,19 @@ pub:
 fn get_database(length u8) map[string]Database {
 	mut database := map[string]Database
 	mut db_names := get_db_names(length)
+	mut path := static_dir
 
-	if !os.exists(static_dir) {
-		os.mkdir_all(static_dir) or {panic(err)}
+	if os.exists(static_dir_media) {
+		path = os.join_path_single(static_dir_media, static_dir)
+	}
+
+	if !os.exists(path) {
+		os.mkdir_all(path) or {panic(err)}
 	}
 
 	for name in db_names {
 		database[name] = Database{
-			sqlite.connect('$static_dir/${name}.db') or { panic(err) }
+			sqlite.connect('$path/${name}.db') or { panic(err) }
 		}
 		database[name].create_tables() or { panic(err) }
 		database[name].create_rows() or { panic(err) }

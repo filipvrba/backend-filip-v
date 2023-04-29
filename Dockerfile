@@ -1,3 +1,5 @@
+# mounts: https://github.com/pocketbase/pocketbase/discussions/537
+
 FROM thevlang/vlang:alpine-dev AS builder
 
 RUN apk update && apk upgrade

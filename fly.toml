@@ -11,6 +11,10 @@ processes = []
 [experimental]
   auto_rollback = true
 
+[mounts]
+  destination = "/media/bef_data"
+  source = "bef_data"
+
 [[services]]
   autostart = true
   autostop = false

@@ -3,6 +3,7 @@ module server
 const(
 	port = 8080
 	static_dir = 'shared'
+	static_dir_media = '/media/bef_data'
 	healts = {
 		200: Health{ 200, "OK" }
 		201: Health{ 201, "Created" }
