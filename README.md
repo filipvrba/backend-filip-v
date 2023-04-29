@@ -1,6 +1,84 @@
-# backend-filip-v
+# Backend-Filip
+This is a CLI application written in V language. It is a backend that provides access to several pre-defined databases through a REST API. It is a lightweight application for manipulation and does not require complicated endpoints. Almost everything is done through one endpoint, with which all databases can be manipulated. The databases are SQLite, which are protected by tokens.
 
-## Dev Notes
+### Content
+- [1 Usage](#1-usage)
+- [2 API](#2-api)
+- [3 SQLite](#3-sqlite)
+- [4 Example](#4-example)
+- [5 Dev Notes](#5-dev-notes)
+- [6 Contributors](#6-contributors)
+
+## 1 Usage
+The application is named bef for CLI execution. When starting the server, the number of databases that the application will create for manipulation through the REST API is defined.
+
+Here are the options for using the application:
+```txt
+server LENGTH               	Starts a web server with a defined
+								value to create many databases
+								(The LENGTH value has a range from 1 to 255).           
+-gt LENGTH, --get-token LENGTH  Generates a token with a defined length.
+```
+
+> ### Info
+> Never publish tokens or put them in more accessible places!
+
+## 2 API
+To access the API, 3 endpoints are used. The first is the most basic for manipulating the DB. It allows these methods GET, POST, PATCH, and DELETE. The remaining endpoints have only the GET method.
+
+Endpoints:
+1. **/api/v1**
+	- GET:
+		Classic URL with parameters.
+		```txt
+		<URL>/api/v1?token=<CLIENT_TOKEN>&database=<NAME>&query=<SQL_QUERY>
+		```
+	- POST, PATCH and DELETE:
+		Data are sent through the header.
+		```txt
+		<URL>
+		-H "Token: <SERVER_TOKEN>"
+		-H "Database: <NAME>"
+		-H "Query: <SQL_QUERY>"
+		```
+
+2. **/api/v1/guard**
+	- GET:
+		```txt
+		<URL>/api/v1/guard?token=<GUARD_TOKEN>&database=<NAME>
+		```
+
+3. **/api/v1/github/access_token**
+	- GET:
+		```txt
+		<URL>/github/access_token?client_id=<APP_ID_GITHUB>" +
+		"&database=<NAME>&code=<GITHUB_AUTH_CODE>&scope=<GITHUB_SCOPE>"
+		```
+
+## 3 SQLite
+Automatic table generation:
+- **Authorization**
+	- **id** *int (Automatic)*
+	- **client_secret** *string*
+	- **client_token** *string (Automatically generates a 32-character token.)*
+	- **server_token** *string (Automatically generates a 64-character token.)*
+- **Guard**
+	- **id** *int (Automatic)*
+	- **query** *string*
+	- **token** *string*
+
+1. Authorization: Is for DB and GitHub authorization.
+	- client_token: Accesses the DB using SELECT command.
+	- server_token: Accesses the DB using POST, PATCH, and DELETE commands.
+2. Guard: Is for limiting access to the DB using a predefined command ***(uses only SELECT)***.
+
+## 4 Example
+Here are examples of using BEF api, which are accessed via frontend or cli application.
+
+- [DragonRuby-Egg (UI)](https://github.com/filipvrba/dragonruby-egg-ui-rjs)
+- [DragonRuby-Egg (CLI)](https://github.com/filipvrba/dragonruby-egg-rb)
+
+## 5 Dev Notes
 Write notes here, for the development of this project.
 
 *Pseudocode:*
@@ -22,14 +100,6 @@ http -> /api/v1/database
 [x] fn patch_api_database
 ```
 
-*SQL examples:*
-```sql
-CREATE TABLE profiles (name TEXT, year INTEGER);
-INSERT INTO profiles (name, year) VALUES ("filip", 27);
-DELETE FROM profiles WHERE name='lada';
-UPDATE profiles SET name="lada" WHERE name="lukas";
-```
-
 *Logic for getting the column name into **exec(...)** function was added to db.sqlite module:*
 ```v
 // 84
@@ -49,3 +119,6 @@ if col == &char(0) {
 }
 // 237
 ```
+
+## 6 Contributors
+- [Filip Vrba](https://github.com/filipvrba) - creator and maintainer
