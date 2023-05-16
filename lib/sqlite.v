@@ -228,8 +228,8 @@ pub fn (db &DB) exec(query string) ([]Row, int) {
 		}
 		mut row := Row{}
 		for i in 0 .. nr_cols {
-			col := unsafe { &char(C.sqlite3_column_name(stmt, i)) }
-			if col == &char(0) {
+			col := unsafe { &u8(C.sqlite3_column_name(stmt, i)) }
+			if col == &u8(0) {
 				row.cols << ''
 			} else {
 				row.cols << unsafe { tos_clone(col) }
