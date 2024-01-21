@@ -8,7 +8,7 @@ pub fn (mut s Server) health() vweb.Result {
 	return s.json(healts[200])
 }
 
-[options; "/api/v1"]
+@[options; "/api/v1"]
 pub fn (mut s Server) options_api_database() vweb.Result {
 	s.add_header("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH")
 	s.add_header("Access-Control-Allow-Headers", "Token, Database, Query")
@@ -16,7 +16,7 @@ pub fn (mut s Server) options_api_database() vweb.Result {
 	return s.json(healts[200])
 }
 
-[get; "/api/v1"]
+@[get; "/api/v1"]
 pub fn (mut s Server) get_api_database() vweb.Result {
 	token := s.query['token']
 	database := s.query['database']
@@ -44,16 +44,16 @@ pub fn (mut s Server) get_api_database() vweb.Result {
 		return s.json(healts[405])
 	}
 
-	context := s.database[database].exec(query) or {
+	context := unsafe{s.database[database].exec(query) or {
 		event.println(get_err_health(err.str()).str())
 		return s.json(get_err_health(err.str()))
-	}
+	}}
 	
 	event.println(healts[200].str())
 	return s.json(context)
 }
 
-[post; "/api/v1"]
+@[post; "/api/v1"]
 pub fn (mut s Server) post_api_database() vweb.Result {
 	header := s.Context.req.header
 	token := header.get_custom("Token") or {""}
@@ -80,15 +80,17 @@ pub fn (mut s Server) post_api_database() vweb.Result {
 		return s.json(healts[405])	
 	}
 
-	s.database[database].exec(query) or {
-		event.println(get_err_health(err.str()).str())
-		return s.json(get_err_health(err.str()))
+	unsafe{
+		s.database[database].exec(query) or {
+			event.println(get_err_health(err.str()).str())
+			return s.json(get_err_health(err.str()))
+		}
 	}
 	event.println(healts[201].str())
 	return s.json(healts[201])
 }
 
-[delete; "/api/v1"]
+@[delete; "/api/v1"]
 pub fn (mut s Server) delete_api_database() vweb.Result {
 	header := s.Context.req.header
 	token := header.get_custom("Token") or {""}
@@ -114,15 +116,17 @@ pub fn (mut s Server) delete_api_database() vweb.Result {
 		return s.json(healts[405])
 	}
 
-	s.database[database].exec(query) or {
-		event.println(get_err_health(err.str()).str())
-		return s.json(get_err_health(err.str()))
+	unsafe{
+		s.database[database].exec(query) or {
+			event.println(get_err_health(err.str()).str())
+			return s.json(get_err_health(err.str()))
+		}
 	}
 	event.println(healts[200].str())
 	return s.json(healts[200])
 }
 
-[patch; "/api/v1"]
+@[patch; "/api/v1"]
 pub fn (mut s Server) patch_api_database() vweb.Result {
 header := s.Context.req.header
 	token := header.get_custom("Token") or {""}
@@ -148,9 +152,11 @@ header := s.Context.req.header
 		return s.json(healts[405])
 	}
 
-	s.database[database].exec(query) or {
-		event.println(get_err_health(err.str()).str())
-		return s.json(get_err_health(err.str()))
+	unsafe{
+		s.database[database].exec(query) or {
+			event.println(get_err_health(err.str()).str())
+			return s.json(get_err_health(err.str()))
+		}
 	}
 	event.println(healts[200].str())
 	return s.json(healts[200])

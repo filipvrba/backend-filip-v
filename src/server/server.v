@@ -5,7 +5,7 @@ import vweb
 pub struct Server {
 	vweb.Context
 pub mut:
-	database map[string]Database [vweb_global]
+	database map[string]Database @[vweb_global]
 }
 
 pub fn new(length u8) {

@@ -3,6 +3,7 @@ module server
 import db.sqlite
 import os
 import src.cli
+import rb
 
 pub struct Database {
 pub:
@@ -26,8 +27,12 @@ fn get_database(length u8) map[string]Database {
 		database[name] = Database{
 			sqlite.connect('$path/${name}.db') or { panic(err) }
 		}
-		database[name].create_tables() or { panic(err) }
-		database[name].create_rows() or { panic(err) }
+
+		unsafe{
+			database[name].create_tables() or { panic(err) }
+			database[name].create_rows() or { panic(err) }
+			database[name].print_authorization(name) or { panic(err) }
+		}
 	}
 	return database
 }
@@ -41,9 +46,8 @@ fn get_db_names(length u8) []string {
 }
 
 fn (d Database) exec(query string) ![]map[string]string {
-	rows, status_code := d.sqlite.exec("$query;")
-	if status_code != 101 {
-		return error(status_code.str())
+	rows := d.sqlite.exec("$query;") or {
+		return error(err.str())
 	}
 
 	mut rows_arr := []map[string]string{}
@@ -85,4 +89,15 @@ fn (d Database) create_row_authorization() ! {
 			include auth into Authorization
 		}!
 	}
+}
+
+fn (d Database) print_authorization(name string) ! {
+	select_auth := sql d.sqlite {
+		select from Authorization
+	} or { []Authorization{} }[0]
+	
+	rb.Event{name: "authorization"}.println('$name \{\n' +
+		'\tclient_token: ${select_auth.client_token}\n' +
+		'\tserver_token: ${select_auth.server_token}' +
+	'\n\}')
 }

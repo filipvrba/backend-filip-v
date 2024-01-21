@@ -5,7 +5,7 @@ import rb
 import net.http
 import net.urllib
 
-[get; "/api/v1/github/access_token"]
+@[get; "/api/v1/github/access_token"]
 pub fn (mut s Server) get_api_github_access_token() vweb.Result {
 	client_id := s.query['client_id']
 	code := s.query['code']

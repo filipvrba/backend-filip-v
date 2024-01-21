@@ -3,7 +3,7 @@ module server
 import vweb
 import rb
 
-[get; "/api/v1/guard"]
+@[get; "/api/v1/guard"]
 pub fn (mut s Server) get_api_database_guard() vweb.Result {
 	token := s.query['token']
 	database := s.query['database']
@@ -25,10 +25,10 @@ pub fn (mut s Server) get_api_database_guard() vweb.Result {
 		return s.json(healts[405])
 	}
 
-	context := s.database[database].exec(query) or {
+	context := unsafe{s.database[database].exec(query) or {
 		event.println(get_err_health(err.str()).str())
 		return s.json(get_err_health(err.str()))
-	}
+	}}
 
 	event.println(healts[200].str())
 	return s.json(context)
