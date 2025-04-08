@@ -1,6 +1,8 @@
 # Backend-Filip
 This is a CLI application written in V language. It is a backend that provides access to several pre-defined databases through a REST API. It is a lightweight application for manipulation and does not require complicated endpoints. Almost everything is done through one endpoint, with which all databases can be manipulated. The databases are SQLite, which are protected by tokens.
 
+**Please note that this repository is now archived and no longer actively maintained.**
+
 ### Content
 - [1 Usage](#1-usage)
 - [2 API](#2-api)
